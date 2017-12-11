@@ -13,7 +13,7 @@ Authors: David Mutchler, Dave Fisher, Valerie Galluzzi, Amanda Stouder,
 """  # DONE: 1. PUT YOUR NAME IN THE ABOVE LINE.
 
 import rosegraphics as rg
-
+import math
 
 # ----------------------------------------------------------------------
 # Students: As you work each of these problems, ask yourself:
@@ -348,7 +348,7 @@ def draw_lines_from_rectangles(rectangle1, rectangle2, n, window):
       :type window: rg.RoseWindow
       """
     # ------------------------------------------------------------------
-    # TODO: 5. Implement and test this function.
+    # DONE: 5. Implement and test this function.
     #          Tests have been written for you (above).
     #
     # CONSIDER using the ACCUMULATOR IN GRAPHICS pattern,
@@ -367,15 +367,29 @@ def draw_lines_from_rectangles(rectangle1, rectangle2, n, window):
     q = rectangle1.corner_2
     a = rectangle2.corner_1
     b = rectangle2.corner_2
-    for _ in range(n):
-        p1x = (q.x + p.x)/2
-        p1y = (q.y + p.y)/2
-        p2x = (b.x + a.x)/2
-        p2y = (b.y + a.y)/2
-        point1 = rg.Point(p1x, p1y)
-        point2 = rg.Point(p2x, p2y)
+    length1 = (q.x - p.x)/2
+    height1 = (q.y - p.y)/2
+    length2 = (b.x - a.x)/2
+    height2 = (b.y - a.y)/2
+    p1x = (q.x + p.x) / 2
+    p1y = (q.y + p.y) / 2
+    p2x = (b.x + a.x) / 2
+    p2y = (b.y + a.y) / 2
+    point1 = rg.Point(p1x, p1y)
+    point2 = rg.Point(p2x, p2y)
+    for k in range(n):
         line = rg.Line(point1, point2)
+        point1.x = point1.x - math.fabs(length1)
+        point1.y = point1.y + math.fabs(height1)
+        point2.x = point2.x - math.fabs(length1)
+        point2.y = point2.y + math.fabs(height1)
+        line.thickness = 5
+        if k % 2 == 0:
+            line.color = rectangle1.outline_color
+        else:
+            line.color = rectangle2.outline_color
         line.attach_to(window)
+        window.render()
     window.render()
 
 
